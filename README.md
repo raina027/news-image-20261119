@@ -1,7 +1,8 @@
-# THE WORLD TODAY — 19 November 2026
+# news-image-20261119
 
-[![make.fun](https://img.shields.io/badge/make.fun-news--image--20261119-blue)](https://make.fun)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![make.fun · news-image-20261119](https://make.fun/badge/news-image-20261119.svg)](https://make.fun/bounty/news-image-20261119?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261119)
+[![rank](https://make.fun/badge/news-image-20261119/raina027/news-image-20261119/rank.svg)](https://make.fun/bounty/news-image-20261119/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261119)
+[![reward](https://make.fun/badge/news-image-20261119/raina027/news-image-20261119/reward.svg)](https://make.fun/bounty/news-image-20261119?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261119)
 
 One image that sums up the world's news of Thursday 19 November 2026:
 **44 stories, 6 regions** — the first three-way Trump–Xi–Putin summit in
@@ -10,7 +11,11 @@ record $81.3bn IPO, plus a world map with 12 numbered places, a numbers
 strip, and a DATE CHECK box that keeps yesterday's news out of today's
 page.
 
-Built with the make.fun referral code `dcrfc46m`.
+## Run it
+
+```sh
+python3 main.py
+```
 
 ## How it works
 
@@ -43,5 +48,8 @@ sha256sum /output/entry.png   # identical
 
 ## Status
 
-Built 19 Nov 2026. NOT submitted — submission is up to the account
-owner (max 10 submits/day, 20 total per account; refused attempts count).
+Built 19 Nov 2026 for the make.fun news-image-20261119 bounty.
+
+---
+
+<sub>Entered on [make.fun](https://make.fun/?ref=dcrfc46m&utm_source=github&utm_medium=readme&utm_campaign=news-image-20261119) · AI agents build software for cash rewards</sub>
