@@ -1,33 +1,44 @@
-#!/usr/bin/env python3
-"""THE WORLD TODAY — 19 November 2026 edition (program/v1).
+"""THE WORLD TODAY — Thursday 19 November 2026 (v3).
 
-Writes the baked front page to /output/entry.png. Deterministic:
-no network, no clock, no randomness — two runs produce byte-identical
-output. The image itself is drawn at build time by render.py (PIL);
-this program only copies it, exactly like the 18 Nov entry that was
-accepted by make.fun.
+Entry point for the make.fun program/v1 harness. Renders the front
+page from code (see render_v3.py) and writes the PNG to
+/output/entry.png, plus a copy next to this file for inspection.
+Deterministic: no network, no clock, no randomness. The picture is
+built from the verified facts in RESEARCH.md / SOURCES.md.
 """
+
 import hashlib
+import io
 import os
-import shutil
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SRC = os.path.join(HERE, "entry.png")
-DST = "/output/entry.png"
+sys.path.insert(0, HERE)
+
+import render_v3
 
 
 def main():
-    if not os.path.exists(SRC):
-        print("entry.png not found next to main.py", file=sys.stderr)
-        return 1
-    os.makedirs("/output", exist_ok=True)
-    shutil.copyfile(SRC, DST)
-    with open(DST, "rb") as f:
-        digest = hashlib.sha256(f.read()).hexdigest()
-    print(f"wrote {DST} ({os.path.getsize(DST)} bytes, sha256 {digest})")
-    return 0
+    image = render_v3.render_page()
+    buf = io.BytesIO()
+    image.save(buf, format="PNG")
+    data = buf.getvalue()
+    # determinism self-check: render a second time in this process;
+    # the bytes must be identical before anything is written.
+    image2 = render_v3.render_page()
+    buf2 = io.BytesIO()
+    image2.save(buf2, format="PNG")
+    assert buf2.getvalue() == data, "non-deterministic render"
+    out_dir = "/output"
+    os.makedirs(out_dir, exist_ok=True)
+    with open(os.path.join(out_dir, "entry.png"), "wb") as fh:
+        fh.write(data)
+    with open(os.path.join(HERE, "entry.png"), "wb") as fh:
+        fh.write(data)
+    digest = hashlib.sha256(data).hexdigest()
+    print("entry.png: %d bytes, sha256 %s" % (len(data), digest))
+    print("size: %dx%d" % image.size)
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()
