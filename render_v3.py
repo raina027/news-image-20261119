@@ -1,10 +1,17 @@
-"""THE WORLD TODAY — Thursday 19 November 2026 (v3).
+"""THE WORLD TODAY — Thursday 19 November 2026 (v4).
 
 A one-page newspaper front page, drawn entirely in code with PIL.
 44 verified stories, 6 regions, one day. Deterministic: no network,
 no clock, no random numbers. Every fact comes from RESEARCH.md /
 SOURCES.md in this repo; the ICJ 9-6 verdict was verified against
 live reporting (CNN, WSJ, BBC, NPR) on 20 Nov 2026.
+
+v4 (20 Nov 2026): four small stories swapped for harder news, all
+verified live the same day — Crimea bridge third strike (Reuters,
+Euronews), Houthi missile over Riyadh (Reuters), Korea top court
+overturns ex-PM Han's term in part (Reuters, AP), Denmark backs the
+Arctic pact 109-0 (AP). The map sea is now dark navy, like the top
+entries; region counts follow the swaps.
 """
 
 from PIL import Image, ImageDraw, ImageFont
@@ -25,7 +32,7 @@ GREEN = (46, 125, 79)
 BLUE = (47, 93, 138)
 SLATE = (88, 88, 88)
 LIGHTGREY = (118, 118, 118)
-SEA = (216, 231, 241)
+SEA = (31, 47, 74)
 LAND = (232, 216, 172)
 LANDLINE = (198, 178, 128)
 CREAM = (246, 241, 231)
@@ -551,6 +558,95 @@ def ill_kyiv(d, x, y, w, h):
     d.rectangle([x + w * 0.50 - 13, y + h - 27, x + w * 0.50 + 13, y + h - 13],
                 outline=(255, 255, 255), width=2)
 
+
+def ill_crimea(d, x, y, w, h):
+    d.rectangle([x, y, x + w, y + h], fill=(16, 24, 48))
+    import random as _r
+    rnd = _r.Random(21)
+    for _ in range(12):
+        sx = x + rnd.randint(2, w - 2)
+        sy = y + rnd.randint(2, h - 30)
+        d.ellipse([sx, sy, sx + 1, sy + 1], fill=(255, 255, 255))
+    d.rectangle([x, y + h - 22, x + w, y + h], fill=(24, 52, 88))
+    for i in range(3):
+        d.line([x + 8 + i * 30, y + h - 18, x + 24 + i * 30, y + h - 12],
+               fill=(180, 210, 240), width=1)
+    d.rectangle([x, y + h - 34, x + w, y + h - 28], fill=(150, 150, 150))
+    d.rectangle([x + w * 0.42, y + h - 52, x + w * 0.58, y + h - 34],
+                fill=(120, 120, 120))
+    d.arc([x + w * 0.42, y + h - 52, x + w * 0.58, y + h - 20], 180, 360,
+          fill=(150, 150, 150), width=4)
+    for r, col in ((13, (255, 200, 60)), (8, (255, 140, 40)), (4, (255, 255, 255))):
+        d.ellipse([x + w * 0.72 - r, y + 8 + 14 - r, x + w * 0.72 + r, y + 8 + 14 + r],
+                  fill=col)
+    d.polygon([(x + w * 0.72, y + 22), (x + w * 0.66, y + h - 34),
+               (x + w * 0.78, y + h - 34)], fill=(255, 140, 40))
+    tag = "KERCH BRIDGE"
+    tf = F(SANS_B, 8)
+    d.rectangle([x + 4, y + 3, x + 4 + tw(d, tag, tf) + 10, y + 14],
+                fill=(178, 32, 32))
+    d.text((x + 9, y + 5), tag, font=tf, fill=(255, 255, 255))
+
+
+def ill_houthi(d, x, y, w, h):
+    d.rectangle([x, y, x + w, y + h], fill=(20, 22, 44))
+    skyline(d, x, y + h - 22, w, 22, (52, 52, 70))
+    import math
+    for sx, sy, ex, ey in ((0.12, 0.10, 0.45, 0.55), (0.30, 0.05, 0.62, 0.50)):
+        d.line([x + w * sx, y + h * sy, x + w * ex, y + h * ey],
+               fill=(255, 180, 60), width=2)
+        d.ellipse([x + w * ex - 3, y + h * ey - 3, x + w * ex + 3, y + h * ey + 3],
+                  fill=(255, 140, 40))
+    for r, col in ((10, (255, 200, 60)), (6, (255, 140, 40)), (3, (255, 255, 255))):
+        d.ellipse([x + w * 0.82 - r, y + 10 + 12 - r, x + w * 0.82 + r, y + 10 + 12 + r],
+                  fill=col)
+    tag = "OVER RIYADH"
+    tf = F(SANS_B, 8)
+    d.rectangle([x + 4, y + 3, x + 4 + tw(d, tag, tf) + 10, y + 14],
+                fill=(178, 32, 32))
+    d.text((x + 9, y + 5), tag, font=tf, fill=(255, 255, 255))
+
+
+def ill_korea(d, x, y, w, h):
+    d.rectangle([x, y, x + w, y + h], fill=(238, 234, 222))
+    d.rectangle([x, y + h - 12, x + w, y + h], fill=(120, 82, 40))
+    cx, cy = x + w * 0.30, y + h * 0.42
+    d.ellipse([cx - 20, cy - 20, cx + 20, cy + 20], fill=(255, 255, 255),
+              outline=(60, 60, 60), width=2)
+    d.pieslice([cx - 20, cy - 20, cx + 20, cy + 20], 90, 270, fill=(205, 46, 58))
+    d.pieslice([cx - 20, cy - 20, cx + 20, cy + 20], 270, 90, fill=(0, 71, 160))
+    d.ellipse([cx - 9, cy - 9, cx + 9, cy + 9], fill=(205, 46, 58))
+    d.ellipse([cx - 9, cy - 9, cx + 9, cy + 9], fill=(0, 71, 160))
+    gx = x + w * 0.68
+    d.line([gx - 16, y + h - 30, gx + 22, y + h - 44], fill=(90, 60, 30), width=5)
+    d.rectangle([gx + 18, y + h - 52, gx + 34, y + h - 38], fill=(120, 82, 40))
+    d.rectangle([gx - 22, y + h - 30, gx + 6, y + h - 22], fill=(150, 110, 60))
+    tag = "OVERTURNED"
+    tf = F(SANS_B, 8)
+    d.rectangle([x + w - tw(d, tag, tf) - 12, y + 3, x + w - 4, y + 14],
+                fill=(31, 47, 74))
+    d.text((x + w - tw(d, tag, tf) - 8, y + 5), tag, font=tf, fill=(255, 255, 255))
+
+
+def ill_arctic(d, x, y, w, h):
+    d.rectangle([x, y, x + w, y + h], fill=(190, 220, 235))
+    d.polygon([(x, y + h), (x + w * 0.30, y + h * 0.30), (x + w * 0.55, y + h)],
+              fill=(255, 255, 255))
+    d.polygon([(x + w * 0.45, y + h), (x + w * 0.72, y + h * 0.18),
+               (x + w, y + h)], fill=(225, 235, 245))
+    d.polygon([(x + w * 0.30, y + h * 0.30), (x + w * 0.38, y + h * 0.48),
+               (x + w * 0.22, y + h * 0.48)], fill=(180, 200, 220))
+    d.rectangle([x, y + h - 10, x + w, y + h], fill=(140, 180, 210))
+    d.rectangle([x + 6, y + 6, x + 34, y + 22], fill=(200, 16, 46))
+    d.rectangle([x + 6, y + 12, x + 34, y + 16], fill=(255, 255, 255))
+    d.rectangle([x + 16, y + 6, x + 20, y + 22], fill=(255, 255, 255))
+    badge = "109–0"
+    bf = F(SANS_B, 12)
+    d.ellipse([x + w - 46, y + 4, x + w - 4, y + 34], fill=(46, 125, 79),
+              outline=(255, 255, 255), width=2)
+    d.text((x + w - 46 + (42 - tw(d, badge, bf)) / 2, y + 11), badge, font=bf,
+           fill=(255, 255, 255))
+
 # ---- story data: facts from RESEARCH.md / SOURCES.md ----
 # Display numbers run 1-13 in reading order. The ICJ 9-6 verdict was
 # verified against live reporting on 20 Nov 2026 (CNN, WSJ, BBC, NPR):
@@ -587,26 +683,26 @@ SMALL = [
          head="Cyclone Akvan nears India's east coast",
          deck="Odisha readies evacuation of 200,000; landfall near Puri Friday. — IMD",
          ill=ill_akvan),
-    dict(num=7, place="WASHINGTON", cat="IRAN WAR", pill="CLAIM",
-         head="Trump weighs a new Iran offensive, reports say",
-         deck="No decision yet; Netanyahu presses for a 4–7-day air campaign. — NYT",
-         ill=ill_iran),
+    dict(num=7, place="CRIMEA", cat="WAR", pill="REPORTED",
+         head="Ukraine hits Crimea bridge a third time",
+         deck="Third strike in a week halts trains; road wrecked. — Euronews",
+         ill=ill_crimea),
     dict(num=8, place="SHENZHEN", cat="TRADE", pill="REPORTED",
          head="APEC backs the Shenzhen Declaration",
          deck="Twenty-one economies back digital trade and a roadmap. — Xinhua",
          ill=ill_apec),
-    dict(num=9, place="FLORIDA", cat="WEATHER", pill="FORECAST",
-         head="Flooded Florida braces for still more rain",
-         deck="Flood watch to Thursday night; Volusia schools shut Thu–Fri. — Fox Weather",
-         ill=ill_florida),
-    dict(num=10, place="SEOUL", cat="EDUCATION", pill="REPORTED",
-         head="Half a million sit Korea's Suneung",
-         deck="551,864 sit the exam; flights halt 35 minutes for listening. — AJU Press",
-         ill=ill_suneung),
-    dict(num=11, place="SCIENCE", cat="GEOLOGY", pill="REPORTED",
-         head="Earth's missing billion years are explained",
-         deck="Mantle currents and giant ice sheets erased the rock record. — Nature",
-         ill=ill_science),
+    dict(num=9, place="RIYADH", cat="WAR", pill="REPORTED",
+         head="Houthi missile rattles Riyadh",
+         deck="Coalition dealt with the threat; debris fell. — Reuters",
+         ill=ill_houthi),
+    dict(num=10, place="SEOUL", cat="JUSTICE", pill="REPORTED",
+         head="Top court overturns Han's term",
+         deck="15-year term quashed in part; retrial ordered. — Reuters",
+         ill=ill_korea),
+    dict(num=11, place="GREENLAND", cat="PACT", pill="REPORTED",
+         head="Denmark backs Arctic pact with US",
+         deck="Parliament approves the Greenland security deal 109–0. — AP",
+         ill=ill_arctic),
     dict(num=12, place="GAZA", cat="AID", pill="REPORTED",
          head="Rain displaces 46,000 households in Gaza",
          deck="Four nations ask Israel to let aid into flooded Gaza. — Paris Eye",
@@ -664,17 +760,17 @@ DATE_CHECK = (
 TIMELINE = [
     ("00:00", "AUCKLAND", "GTA VI unlocks"),
     ("MORNING", "SHENZHEN", "Leaders meet"),
-    ("08:40", "SEOUL", "Suneung begins"),
+    ("NIGHT", "CRIMEA", "Bridge hit again"),
     ("10:00", "THE HAGUE", "Court reads judgment"),
     ("09:30", "NEW YORK", "Market opens"),
     ("EVENING", "ANTALYA", "Ministers take over"),
 ]
 
 REGIONS = [
-    ("EUROPE", 6, (47, 93, 138)),
-    ("THE AMERICAS", 11, (168, 58, 58)),
+    ("EUROPE", 7, (47, 93, 138)),
+    ("THE AMERICAS", 9, (168, 58, 58)),
     ("ASIA-PACIFIC", 18, (46, 125, 79)),
-    ("MIDEAST", 4, (176, 124, 16)),
+    ("MIDEAST", 5, (176, 124, 16)),
     ("OCEANIA", 2, (106, 76, 147)),
     ("WORLD", 3, (88, 88, 88)),
 ]
@@ -685,7 +781,7 @@ NUMBERS = [
     ("200,000", "Odisha's evacuation plan"),
     ("$120bn", "COP31 adaptation goal"),
     ("730,000", "Rohingya who fled in 2017"),
-    ("551,864", "Korea's Suneung sitters"),
+    ("109–0", "Denmark's Arctic pact vote"),
 ]
 
 # ---- world map: coarse continent outlines, lon/lat ----
@@ -761,9 +857,10 @@ MAP_DOTS = [
     (4.3, 52.1, "2", 0, 0),
     (30.7, 36.9, "3", -6, -4),
     (85.8, 20.3, "6", 0, 0),
-    (-77.0, 38.9, "7", -2, -3),
-    (-80.1, 26.0, "9", 0, 5),
+    (33.5, 45.0, "7", 10, 8),
+    (46.7, 24.7, "9", 0, 0),
     (127.0, 37.5, "10", 0, 0),
+    (12.6, 55.7, "11", 0, 0),
     (34.5, 31.5, "12", 8, 6),
     (30.5, 50.5, "13", 4, -3),
     (96.1, 19.8, "23", 0, 0),

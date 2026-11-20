@@ -389,3 +389,11 @@ Auckland (174.8, -36.8).
   kotak DATE CHECK, footer sumber + kalimat kejujuran tanggal.
 - Font: DejaVu (tersedia di sistem) — serif tebal untuk masthead,
   sans untuk isi, seperti kemarin.
+
+## v4 swaps (verified live 20 Nov 2026, Raina)
+Four small stories swapped for harder news after the round-5 score (985,464, #199) showed the top entries lead on hard-news density, not story count (rank 1 has 33 stories, rank 4 has 24):
+- #7 Crimea bridge, third strike in a week: Neptune missiles hit the railway section overnight 18-19 Nov; train services suspended, no casualties; rail resumed in the afternoon. Sources: Reuters (reuters.com/world/china/third-attack-week-suspends-traffic-over-crimean-bridge-russian-official-says-2026-11-19), Euronews, CNN.
+- #9 Houthi missile over Riyadh: coalition dealt with a missile threat toward Riyadh on Thu 19 Nov after a loud boom; debris fell, material damage reported; also intercepted cruise missiles and 4 ballistic missiles toward the south. Source: Reuters (Nov 19). The PIF Tower damage detail is 20 Nov reporting, NOT used here.
+- #10 Korea top court: Supreme Court (full bench) on 19 Nov overturned ex-PM Han Duck-soo's 15-year sentence IN PART and sent the case back to Seoul High Court for retrial; the Cabinet-meeting charge lacked proven intent to subvert the constitution; martial law itself unconstitutional. Sources: Reuters, AP.
+- #11 Denmark Arctic pact: Folketing voted 109-0 on Thu 19 Nov to consent to the US-Denmark-Greenland security agreement; Greenland's parliament approved 3 Nov (16-0-7); enters into force after a diplomatic note to the US. Source: AP.
+Region counts updated: EUROPE 7, THE AMERICAS 9, ASIA-PACIFIC 18, MIDEAST 5, OCEANIA 2, WORLD 3 (44 total). Map sea darkened to navy, like the top entries.
