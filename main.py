@@ -29,12 +29,18 @@ def main():
     buf2 = io.BytesIO()
     image2.save(buf2, format="PNG")
     assert buf2.getvalue() == data, "non-deterministic render"
-    out_dir = "/output"
+    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
     with open(os.path.join(out_dir, "entry.png"), "wb") as fh:
         fh.write(data)
-    with open(os.path.join(HERE, "entry.png"), "wb") as fh:
-        fh.write(data)
+    # Best-effort inspection copy next to this file: the grader runs
+    # with a read-only repository, so a failed copy must never fail
+    # the run.
+    try:
+        with open(os.path.join(HERE, "entry.png"), "wb") as fh:
+            fh.write(data)
+    except OSError:
+        pass
     digest = hashlib.sha256(data).hexdigest()
     print("entry.png: %d bytes, sha256 %s" % (len(data), digest))
     print("size: %dx%d" % image.size)
